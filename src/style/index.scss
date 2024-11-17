@@ -1,0 +1,23 @@
+//全局样式设置
+//引入清楚默认的样式
+@import './reset.scss';
+// 格式要求;结尾？
+
+::-webkit-scrollbar
+{
+    width:10px;
+}
+//滚动外条样式设置
+::-webkit-scrollbar-track{
+    background-color: $bar_aside_color;
+}
+//滚动内条样式设置
+::-webkit-scrollbar-thumb{
+    width: 10px;
+    background-color: yellowgreen;
+    border-radius: 10px;
+}
+--el-menu-bg-color
+{
+    background-color: pink;
+}

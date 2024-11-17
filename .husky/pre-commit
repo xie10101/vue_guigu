@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+pnpm run format
+# 设置--在代码提交时自动（git hook）进行格式化代码--（暂时是仅是应用prettier？）
