@@ -3,23 +3,38 @@
     <el-card class="top_card">
       <el-form :inline="true" class="form_top">
         <el-form-item label="用户名：">
-          <el-input placeholder="请输入用户名"></el-input>
+          <el-input
+            v-model="checkusername"
+            placeholder="请输入用户名"
+          ></el-input>
         </el-form-item>
         <el-form-item style="right: 10px; position: absolute">
-          <el-button type="primary">搜索</el-button>
-          <el-button>重置</el-button>
+          <el-button type="primary" @click="Search" :disabled="!checkusername"
+            >搜索</el-button
+          >
+          <el-button @click="Reset">重置</el-button>
         </el-form-item>
       </el-form>
     </el-card>
     <el-card>
       <div>
         <el-button type="primary" @click="handleAddUser">添加用户</el-button>
-        <el-button type="warning">批量删除</el-button>
+        <el-popconfirm
+          title="你确定要将这些用户删除吗"
+          @confirm="checkedDelete"
+        >
+          <template #reference>
+            <el-button type="warning" :disabled="selectionRows.length < 1"
+              >批量删除</el-button
+            >
+          </template>
+        </el-popconfirm>
       </div>
       <el-table
         border
         style="margin-top: 18px; margin-bottom: 18px"
         :data="userinfos?.records"
+        @selection-change="handleSelected"
       >
         <el-table-column type="selection"></el-table-column>
         <el-table-column label="#" type="index" width="50px"> </el-table-column>
@@ -47,13 +62,13 @@
             >
               编辑</el-button
             >
-            <el-button
-              type="danger"
-              icon="Delete"
-              size="small"
-              @click="Delete(row)"
-              >删除</el-button
-            >
+            <el-popconfirm title="你确定要删除此用户吗" @confirm="Delete(row)">
+              <template #reference>
+                <el-button type="danger" icon="Delete" size="small"
+                  >删除</el-button
+                >
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -170,6 +185,7 @@ import {
 import {
   addOrUpdateInfos,
   assignRoles,
+  batchRemove,
   getUserInfos,
   getUserRoles,
   removeUser,
@@ -203,10 +219,18 @@ const isIndeterminate = ref(false);
 const assignrolesdata = ref<Role[]>([]);
 //已选角色与将被选中的角色
 const checkedRoles = ref<number[]>([]);
+//设置绑定的搜索用户名称;
+const checkusername = ref<string>("");
+//被选中的删除id：
+const selectionRows = ref<number[]>([]);
 
 // 将获取数据操作进行封装：
 const getInfos = async () => {
-  const result: UserInfos = await getUserInfos(pageon.value, size.value);
+  const result: UserInfos = await getUserInfos(
+    pageon.value,
+    size.value,
+    checkusername.value
+  );
   if (result.code == 200) {
     userinfos.value = result.data;
     ElMessage({
@@ -416,6 +440,40 @@ const Allocate = async () => {
 };
 const cancelAllocate = () => {
   drawer2.value = false;
+};
+
+//搜索按钮的回调
+const Search = () => {
+  getInfos();
+};
+//重置按钮的回调: --使用封装的刷新回调;
+import useTabbarStore from "../../../store/setting";
+const TabbarStore = useTabbarStore();
+const Reset = () => {
+  // checkusername.value = "";
+  // getInfos(); //此方法会导致产生信息提示;
+  TabbarStore.refresh = false; //实质是在展示面外层组件 监视 watch refresh变化 --执行组件的重新挂载
+};
+
+//获取选中id
+const handleSelected = (data: Record[]) => {
+  selectionRows.value = data.map((item) => item.id as number);
+};
+//批量删除的回调:
+const checkedDelete = async () => {
+  const result = await batchRemove(selectionRows.value);
+  if (result.code == 200) {
+    ElMessage({
+      type: "success",
+      message: "批量删除成功",
+    });
+    getInfos();
+  } else {
+    ElMessage({
+      type: "error",
+      message: "批量删除失败",
+    });
+  }
 };
 </script>
 

@@ -19,12 +19,17 @@ enum API {
   GETROLEURL = "/admin/acl/user/toAssign/",
   //为用户分配角色：
   ASSIGNROLES = "/admin/acl/user/doAssignRole",
+  //多个删除：
+  BATCHREMOVE = "/admin/acl/user/batchRemove",
 }
 // 语法格式 ：enum API{ }
 
 //获取全部用户信息接口：
-export const getUserInfos = (page: number, limit: number) =>
-  request.get<any, UserInfos>(API.GETUSERINFOS + `${page}/${limit}`);
+export const getUserInfos = (page: number, limit: number, username: string) =>
+  request.get<any, UserInfos>(
+    // 配置 query参数时 ·
+    API.GETUSERINFOS + `${page}/${limit}?username=${username}`
+  );
 
 //更新与添加接口合并：
 export const addOrUpdateInfos = (data: Record) => {
@@ -40,6 +45,9 @@ export const addOrUpdateInfos = (data: Record) => {
 // 此处的id 需要使用 ? --也为id数据最初定义的是可以存在和不存在两种状态 Record --仅设置了一种类型
 export const removeUser = (id?: number) =>
   request.delete<any, userInfoResponseData>(API.REMOVEUSER + `${id}`);
+//多项删除：
+export const batchRemove = (idlist: number[]) =>
+  request.delete<any, any>(API.BATCHREMOVE, { data: idlist });
 
 //获取用户角色？
 export const getUserRoles = (id: number) =>
