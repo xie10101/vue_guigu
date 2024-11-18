@@ -229,7 +229,7 @@ const getInfos = async () => {
   const result: UserInfos = await getUserInfos(
     pageon.value,
     size.value,
-    checkusername.value
+    checkusername.value,
   );
   if (result.code == 200) {
     userinfos.value = result.data;

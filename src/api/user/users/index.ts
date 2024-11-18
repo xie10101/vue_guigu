@@ -28,7 +28,7 @@ enum API {
 export const getUserInfos = (page: number, limit: number, username: string) =>
   request.get<any, UserInfos>(
     // 配置 query参数时 ·
-    API.GETUSERINFOS + `${page}/${limit}?username=${username}`
+    API.GETUSERINFOS + `${page}/${limit}?username=${username}`,
   );
 
 //更新与添加接口合并：
