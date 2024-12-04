@@ -59,7 +59,7 @@ router.beforeEach(
       }
     }
     return true;
-  }
+  },
 );
 
 router.afterEach(() => {

@@ -119,7 +119,7 @@ const useloginStore = defineStore(
       userinfos,
       outlogin,
     };
-  }
+  },
   //小仓库存储数据的地方
 );
 export default useloginStore;

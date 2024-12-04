@@ -28,7 +28,5 @@ export interface RoleResponseData extends ResponseData {
     maxLimit: null;
     searchCount: boolean;
     pages: number;
-    
   };
-
 }

@@ -21,7 +21,7 @@ defineOptions({
   display: flex;
   justify-content: space-between;
   // background-color: grey;
-  // 顶栏渐变色设置 
+  // 顶栏渐变色设置
   // background-image: linear-gradient(to right, white, rgb(163, 191, 202), white);
   align-items: center;
   //垂直方向

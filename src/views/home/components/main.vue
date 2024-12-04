@@ -23,11 +23,11 @@ watch(
   () => TabbarStore.refresh,
   () => {
     flag.value = false;
-    // 需要等到 组件再次挂载之后才能拿到最新的flag值 
+    // 需要等到 组件再次挂载之后才能拿到最新的flag值
     nextTick(() => {
       flag.value = true;
     });
-  }
+  },
 );
 </script>
 

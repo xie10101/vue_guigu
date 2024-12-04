@@ -23,7 +23,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <!--  -->
+  <!--  -->
   <div class="top">
     <div class="left">
       <span class="lbtn" @click="goHome">首页</span>
