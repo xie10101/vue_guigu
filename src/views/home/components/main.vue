@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- 插槽对应占位的组件时route-view 获取到的组件 -->
+    <!-- 插槽对应占位的组件  route-view 获取到的组件 -->
     <router-view v-slot="{ Component }">
       <!-- 过渡动画设置-->
       <transition name="fade">
@@ -22,12 +22,12 @@ let flag = ref<boolean>(true);
 watch(
   () => TabbarStore.refresh,
   () => {
-    console.log("122");
     flag.value = false;
+    // 需要等到 组件再次挂载之后才能拿到最新的flag值 
     nextTick(() => {
       flag.value = true;
     });
-  },
+  }
 );
 </script>
 

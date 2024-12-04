@@ -1,6 +1,8 @@
 <template>
   <!-- 此组件为根据路由动态生成的菜单 -->
+  <!-- 最外部的 template 用于循环 生成 单个 menu-item组件  -->
   <template v-for="(item, index) in props.menulist" :key="index">
+    <!-- 本身展示本身 -->
     <template v-if="!item.children">
       <el-menu-item
         :index="item.path"
@@ -17,6 +19,7 @@
         </template>
       </el-menu-item>
     </template>
+    <!-- 孩子数组中存在一个元素时 仅将孩子展示 -->
     <template v-if="item.children && item.children.length == 1">
       <el-menu-item
         v-if="!item.children[0].meta.hidden"
@@ -44,7 +47,7 @@
         </el-icon>
         <span v-if="!TabbarSore.fold"> {{ item.meta.title }}</span>
       </template>
-      <!-- 组件的递归   递归组件-->
+      <!-- 组件的递归  递归组件-->
       <Menus :menulist="item.children"></Menus>
     </el-sub-menu>
   </template>

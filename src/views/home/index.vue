@@ -61,7 +61,7 @@ let default_index = route.path;
 
 //控制菜单的折叠：
 
-//引入折叠变量与函数：
+//引入折叠变量与函数：--菜单整体折叠的实现：
 import useTabbarStore from "../../store/setting";
 let TabbarStore = useTabbarStore();
 
@@ -82,7 +82,7 @@ let TabbarStore = useTabbarStore();
 }
 .menu_contain {
   // width: 100vw-$bar_aside_width;
-  background-color: pink;
+
   height: 100vh;
 }
 .menu_head {
@@ -94,12 +94,11 @@ let TabbarStore = useTabbarStore();
 .menu_main {
   width: 100vw-$bar_aside_width;
   height: 100vh-$bar_head_height;
-  background-color: #fff;
+
   padding: 0;
 }
 .main_layout {
   height: 1000px;
-  background-color: #fff;
   padding: 20px;
 }
 // .menu

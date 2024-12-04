@@ -25,6 +25,9 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 // （整体引用）自动全局导入
 
+//element-plus 暗黑模式样式的设置 ：
+import "element-plus/theme-chalk/dark/css-vars.css";
+
 import App from "./App.vue";
 //导入仓库实例
 import pinia from "./store";

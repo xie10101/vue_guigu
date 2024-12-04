@@ -37,6 +37,8 @@ const useloginStore = defineStore(
         if (result.code == 200) {
           Message.value = "登录成功";
           type.value = "success";
+          console.log(result.data);
+
           token.value = result.data as string;
           localStorage.setItem("TOKEN", result.data as string);
           const redirect = $route?.query?.redirect;
@@ -117,7 +119,7 @@ const useloginStore = defineStore(
       userinfos,
       outlogin,
     };
-  },
+  }
   //小仓库存储数据的地方
 );
 export default useloginStore;

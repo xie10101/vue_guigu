@@ -34,7 +34,7 @@ function createUserList() {
 export default [
   {
     // 登录接口
-    // url: "/api/user/login",
+    url: "/api/user/login",
     method: "post",
     response: ({ body }) => {
       //获取请求体携带过来的用户名与密码
