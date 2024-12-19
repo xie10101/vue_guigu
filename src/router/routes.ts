@@ -1,5 +1,5 @@
-// import { menuroutes } from './routes2'
-export const baseroutes = [
+//常量路由 ：
+export const constantRoutes = [
   {
     path: "/",
     redirect: "/login",
@@ -9,7 +9,7 @@ export const baseroutes = [
       icon: "HomeFilled",
     },
   },
-  // 对于二级路由的设置，跳转后的内容为二级路由绑定组件
+  //登录
   {
     path: "/login",
     // 无法使用@ 相对路径
@@ -30,6 +30,7 @@ export const baseroutes = [
     meta: {
       title: "主页",
       icon: "Plus",
+      hidden: false,
     },
     children: [
       // homepage:
@@ -40,6 +41,7 @@ export const baseroutes = [
         meta: {
           title: "首页",
           icon: "HomeFilled",
+          hidden: false,
         },
       },
     ],
@@ -55,11 +57,24 @@ export const baseroutes = [
       icon: "Apple",
     },
   },
+  ///404
+  {
+    path: "/404",
+    // 无法使用@ 相对路径
+    component: () => import("../views/404/404.vue"),
+    name: "404",
+    meta: {
+      hidden: true,
+    },
+  },
+];
+
+export const asyncRoutes = [
   //权限管理：
   {
     path: "/user",
     component: () => import("../views/home/index.vue"),
-    name: "user",
+    name: "User",
     meta: {
       title: "权限管理",
       hidden: false,
@@ -70,7 +85,7 @@ export const baseroutes = [
       {
         path: "/users",
         component: () => import("../views/user/users/index.vue"),
-        name: "users",
+        name: "Users",
         meta: {
           title: "用户管理",
           hidden: false,
@@ -79,6 +94,7 @@ export const baseroutes = [
       },
       {
         path: "/role",
+        name: "Roles",
         component: () => import("../views/user/role/index.vue"),
         meta: {
           title: "角色管理",
@@ -88,6 +104,7 @@ export const baseroutes = [
       },
       {
         path: "/menu",
+        name: "Menus",
         component: () => import("../views/user/menu/index.vue"),
         meta: {
           title: "菜单管理",
@@ -101,7 +118,7 @@ export const baseroutes = [
   {
     path: "/product",
     component: () => import("../views/home/index.vue"),
-    name: "product",
+    name: "Product",
     meta: {
       title: "商品管理",
       hidden: false,
@@ -112,7 +129,7 @@ export const baseroutes = [
       {
         path: "/attr",
         component: () => import("../views/product/attr/index.vue"),
-        name: "attr",
+        name: "Attr",
         meta: {
           title: "属性管理",
           hidden: false,
@@ -122,7 +139,7 @@ export const baseroutes = [
       {
         path: "/trademark",
         component: () => import("../views/product/trademark/index.vue"),
-        name: "trademark",
+        name: "Trademark",
         meta: {
           title: "商标管理",
           hidden: false,
@@ -132,7 +149,7 @@ export const baseroutes = [
       {
         path: "/sku",
         component: () => import("../views/product/sku/index.vue"),
-        name: "sku",
+        name: "Sku",
         meta: {
           title: "SKU管理",
           hidden: false,
@@ -142,7 +159,7 @@ export const baseroutes = [
       {
         path: "/spu",
         component: () => import("../views/product/spu/index.vue"),
-        name: "spu",
+        name: "Spu",
         meta: {
           title: "SPU管理",
           hidden: false,
@@ -151,16 +168,8 @@ export const baseroutes = [
       },
     ],
   },
-
-  {
-    path: "/404",
-    // 无法使用@ 相对路径
-    component: () => import("../views/404/404.vue"),
-    name: "404",
-    meta: {
-      hidden: true,
-    },
-  },
+];
+export const anyRoutes = [
   {
     path: "/:pathMatch(.*)*",
     // 无法使用@ 相对路径

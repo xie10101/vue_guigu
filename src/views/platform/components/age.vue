@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import * as echarts from "echarts";
-
+import { EChartOption } from "echarts";
 const charts = ref();
 onMounted(() => {
   let mycharts = echarts.init(charts.value);
   //设置配置项:
 
-  let option = {
+  let option: EChartOption = {
     tooltip: {
       trigger: "item",
     },
+
     legend: {
       top: 40,
       right: 10,
@@ -27,7 +28,6 @@ onMounted(() => {
         type: "pie",
         radius: ["40%", "70%"],
         avoidLabelOverlap: false,
-        padAngle: 5,
         itemStyle: {
           borderRadius: 10,
         },

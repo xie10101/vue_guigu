@@ -311,6 +311,7 @@ const Cancel = () => {
   drawer.value = false;
 };
 const validateName = (rule: any, value: string, callback: any) => {
+  console.log(rule)
   if (!value) {
     callback(new Error("用户姓名不能为空"));
   } else {
@@ -321,6 +322,8 @@ const validateName = (rule: any, value: string, callback: any) => {
 // 2.将form组件 设置:rules ,为每个表单项 绑定prop 属性；
 //3. 表单校验规则设置
 const validateUsername = (rule: any, value: any, callback: any) => {
+  console.log(rule);
+
   if (!value) {
     //回调函数中传入错误对象来表示校验失败
     callback(new Error("用户名称不能为空"));
@@ -332,7 +335,7 @@ const validateUsername = (rule: any, value: any, callback: any) => {
   }
 };
 const validatePassword = (rule: any, value: any, callback: any) => {
-  console.log(value);
+  console.log(rule);
   if (!value) {
     callback(new Error("密码不能为空"));
   } else if (value.trim().length < 6) {

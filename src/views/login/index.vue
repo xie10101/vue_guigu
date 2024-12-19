@@ -66,6 +66,7 @@ const ruleForm = reactive<formdata>({
 //账号校验器：
 // 参数：rule:any,value:string,callback:any
 const validateUsername = (rule: any, value: any, callback: any) => {
+  console.log(rule); 
   if (value === "") {
     callback(new Error("账号不能为空"));
   } else {
@@ -74,6 +75,8 @@ const validateUsername = (rule: any, value: any, callback: any) => {
 };
 // 密码校验器
 const validatePassword = (rule: any, value: any, callback: any) => {
+  console.log(rule); 
+
   if (value === "") {
     callback(new Error("密码不能为空"));
   } else {

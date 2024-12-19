@@ -2,8 +2,6 @@
 import router from "./router"; //获取路由器实例
 //全局守卫：项目当中任意路由切换都会触发的钩子；
 import nprogress from "nprogress";
-// import { useRouter } from "vue-router";
-// const $router=useRouter();
 import { ElMessage } from "element-plus";
 // 去除加载圈
 nprogress.configure({ showSpinner: false });

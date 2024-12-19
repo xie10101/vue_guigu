@@ -1,7 +1,17 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, nextTick } from "vue";
-import { reqAllRole, reqAddOrUpdateRole } from "../../../api/role";
-import type { RoleResponseData, Records } from "../../../api/role/type";
+import {
+  reqAllRole,
+  getPermission,
+  reqAddOrUpdateRole,
+  reqAddPermission,
+} from "../../../api/role";
+import type {
+  RoleResponseData,
+  Records,
+  RoleData,
+  MenuData,
+} from "../../../api/role/type";
 import { ElMessage } from "element-plus";
 const currentpage = ref<number>(1);
 const pagesize = ref<number>(10);
@@ -128,6 +138,93 @@ const save = async () => {
   //再次获取 //需要区分 如果是更新之后--需要留在原先页面
   getRoleList(RoleParams.id ? currentpage.value : 1, pagesize.value);
 };
+//抽屉组件绑定：
+const drawer = ref<boolean>(false);
+//定义 数组存储角色权限数据：
+let menuArr = ref<MenuData[]>([]);
+
+//过滤菜单数组项：
+const filterMenu = (arr: MenuData[], selectedmenu: number[]) => {
+  //递归时不能新建数组-- 否则会重复创建
+  //使用 filter 函数进行 数组过滤执行--便于对数组中的每个元素进行操作：
+  // arr.filter((item: MenuData) => {
+  //   console.log("11");
+  //   if (item.select && item.level == 3) {
+  //     arr_id.value.push(item.id);//?
+  //   } else {
+  //     if (item.children) {
+  //       console.log("22");
+  //       // 函数递归对子数组依次过滤
+  //       filterMenu(item.children);
+  //     }
+  //   }
+  // });
+  //forEach 遍历执行：
+  arr.forEach((item: MenuData) => {
+    if (item.select && item.level == 4) {
+      selectedmenu.push(item.id);
+    }
+    if (item.children && item.children.length > 0) {
+      //空数组代表真？
+      // 函数递归对子数组依次过滤
+      filterMenu(item.children, selectedmenu);
+    }
+  });
+  // 此时递归的方法--不能设置返回值
+  return 1;
+};
+
+//分配权限按钮回调：
+const setPermission = async (row: RoleData) => {
+  drawer.value = true;
+  Object.assign(RoleParams, row);
+  const res = await getPermission(row.id as number);
+  if (res.code == 200) {
+    menuArr.value = res.data;
+    filterMenu(menuArr.value as MenuData[], selectedmenu.value);
+  }
+};
+
+//树形控件绑定数据：
+const defaultProps = {
+  children: "children",
+  label: "name",
+};
+
+//新建数组存储 选中的菜单数据：---仅存储四级选框的选项数据
+let selectedmenu = ref<number[]>([]);
+
+// import { getCheckedKeys } from "@/utils/tree";
+//获取选中节点的 回调：
+
+//确认按钮点击回调：
+const confirmClick = async () => {
+  //职位id 权限id 数组
+  const roleId = RoleParams.id;
+  //传值 当前选中的id数组
+  //获取全选id ：
+  let arr = tree.value.getCheckedKeys();
+  //获取半选id ：
+  let arr2 = tree.value.getHalfCheckedKeys();
+  let permissionId = [...arr, ...arr2];
+  const res = await reqAddPermission(roleId, permissionId);
+  if (res.code == 200) {
+    ElMessage({
+      type: "success",
+      message: "分配权限成功",
+    });
+    drawer.value = false;
+    window.location.reload();
+  } else {
+    ElMessage({
+      type: "error",
+      message: "分配权限失败",
+    });
+  }
+};
+
+//树状控件绑定值 ：  --使用 组件方法时 需要获取 组件的实例
+const tree = ref();
 </script>
 <template>
   <el-card>
@@ -172,8 +269,12 @@ const save = async () => {
       ></el-table-column>
       <el-table-column label="操作" width="300">
         <template v-slot="{ row }">
-          <el-button type="primary" icon="user" size="small"
-            >分配角色</el-button
+          <el-button
+            type="primary"
+            icon="user"
+            size="small"
+            @click="setPermission(row)"
+            >分配权限</el-button
           >
           <el-button type="primary" size="small" @click="EditRole(row)"
             >编辑</el-button
@@ -216,6 +317,27 @@ const save = async () => {
       </div>
     </template>
   </el-dialog>
+  <!-- 抽屉组件：分配职位的菜单的权限与按钮的权 限-->
+  <el-drawer v-model="drawer" title="分配权限">
+    <!-- 树形控件的使用 -->
+    <el-tree
+      ref="tree"
+      style="max-width: 600px"
+      :data="menuArr"
+      show-checkbox
+      node-key="id"
+      :default-checked-keys="selectedmenu"
+      :props="defaultProps"
+      default-expand-all
+    />
+    <!-- :props --数据展示字段的设置 -->
+    <template #footer>
+      <div style="flex: auto">
+        <el-button type="primary" @click="confirmClick">确认</el-button>
+        <el-button @click="drawer = false">取消</el-button>
+      </div>
+    </template>
+  </el-drawer>
 </template>
 
 <style scoped lang="scss"></style>

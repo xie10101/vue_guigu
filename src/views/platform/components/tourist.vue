@@ -35,7 +35,7 @@ onMounted(() => {
       right: 0,
       bottom: 0,
     },
-  });
+  } as any);
 });
 </script>
 <template>

@@ -68,7 +68,7 @@ request.interceptors.response.use(
     // 设置失败的promise对象---用于终结promise链--可以被catch捕捉（说明先执行拦截器再执行 catch try函数）;
     return Promise.reject(error);
     // 抛出错误
-  },
+  }
 );
 
 export default request;
